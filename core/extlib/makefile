@@ -19,10 +19,6 @@ all:
 	make makelib -C lua-cjson
 	make -C luavgl
 	make -C lvgl
-	# mv luavgl/libluavgl.a build
-	# mv lua-cjson/libluacjson.a build
-	# mv lvgl/liblvgl.a build
-	# mv lua-5.4.6/src/liblua.a build
 
 	mv luavgl/libluavgl.a ../../output
 	mv lua-cjson/libluacjson.a ../../output
@@ -30,16 +26,7 @@ all:
 	mv lua-5.4.6/src/liblua.a ../../output
 
 	$(CC) -I lua-5.4.6/src -c lua_import.c -o ../../output/lua_import.o
-	# $(AR) x build/libluavgl.a
-	# $(AR) x build/libluacjson.a
-	# $(AR) x build/liblvgl.a
-	# $(AR) x build/liblua.a
-
-	# mv ./*.o build
-
-	# $(AR) rc build/liblua_env.a build/*.o
-	# mv build/liblua_env.a ../../output/
-
+	cp rpi_ws281x-1.0.0/build/libws2811.a ../../output
 
 .PHONY: clean
 
