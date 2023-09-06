@@ -1,0 +1,3 @@
+[submodule "core/extlib/luavgl"]
+	path = core/extlib/luavgl
+	url = https://github.com/paco9527/luavgl.git

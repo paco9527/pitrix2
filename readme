@@ -1,0 +1,7 @@
+core/Extlib:硬件驱动和第三方库,最多只能依赖Modules
+core/Modules:硬件无关代码,内部有相互依赖关系,但对外表现为可以单独使用
+    如graph内部的打印用到log,但是流程代码可以只包含graph的头文件使用
+core/SYS:流程相关代码,依赖HardwareLib和Modules
+
+编译:./makeall.sh 生成包含目录列表并执行make命令
+清理:make clean,暂时不能清理目录里的makefile

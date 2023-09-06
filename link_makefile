@@ -1,0 +1,14 @@
+include ../make.config
+
+OBJ = $(wildcard *.o)
+EXT_LIB += libws2811.a
+EXT_LIB += libluavgl.a
+EXT_LIB += libluacjson.a
+BASE_LIB += liblua.a
+BASE_LIB += liblvgl.a
+# BASE_LIB = liblua_env.a
+
+.PHONY: all
+
+all:
+	$(ECHO)$(TOOL_CHAIN) $(OBJ) $(EXT_LIB) $(BASE_LIB) $(OS_LIB) -o ../$(TARGET) 
