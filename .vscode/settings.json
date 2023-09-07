@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "lvgl.h": "c",
+        "array": "c",
+        "log.h": "c",
+        "stdlib.h": "c",
+        "lauxlib.h": "c",
+        "pthread.h": "c"
+    }
+}

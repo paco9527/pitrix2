@@ -1,23 +1,9 @@
-#ifndef _SCRIPT_INPORT
+#ifndef _SCRIPT_IMPORT
 #define _SCRIPT_IMPORT
-
-#include <unistd.h>
-#include <fcntl.h>
 #include "lua.h"
 #include "lauxlib.h"
-
-#include "log.h"
+#include "lvgl.h"
 #include "render.h"
-#include "network.h"
-#include "simple_bmp.h"
-#ifndef RENDER_USE_LVGL
-#include "graph.h"
-#endif
-
-
-#define SETUP_SCRIPT_BUF_LEN            4096
-#define WORKING_DIR_VARIABLE_NAME       "APPROOT"
-
 
 typedef struct _SCRIPT_LIST
 {
@@ -38,8 +24,6 @@ typedef struct _SCRIPT_LIST
 int script_env_init(lua_State** state);
 int script_env_deinit(lua_State* state);
 int script_exec(SCRIPT_NODE* node);
-
-int inq_script_cnt(void);
 
 int app_load_from_file(char* dir, char* app_name);
 void app_del(SCRIPT_NODE** head, int node_id);

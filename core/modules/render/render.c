@@ -1,5 +1,18 @@
 #include "render.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdint.h>
+#include <pthread.h>
+#include "graph.h"
+#include "log.h"
+
+#define TARGET_FREQ             WS2811_TARGET_FREQ
+#define STRIP_TYPE              WS2811_STRIP_GRB		// the real WRGB, 4 byte
+#define LED_COUNT               (MATRIX_WIDTH * MATRIX_HEIGHT)
+
 #ifdef RENDER_USE_LVGL
 #include "lvgl.h"
 #include "lv_adapter.h"
@@ -32,7 +45,6 @@ static void print_Gram(lv_color_t *buffer, const lv_area_t * area)
     {
         for(x = 0 ; x < 32 ; x++)
         {
-            // printf("%06x ", dump_scr[x+y*32]&0x00ffffff);
             if(dump_scr[x+y*32]&0x00ffffff)
                 printf("1 ");
             else
@@ -111,7 +123,6 @@ ws2811_return_t ws2811_lib_init(RENDER_HDL* render_hdl)
 RENDER get_render_instance(void)
 {
     static RENDER_HDL render_inst = {0};
-//    RENDER hdl = (void*)(&render_inst);
     return (RENDER)(&render_inst);
 }
 
@@ -130,7 +141,7 @@ RENDER render_init(uint16_t w, uint16_t h)
     ws2811_t* lib_setting = &(render_hdl->ledstring);
 
     lib_setting->freq = TARGET_FREQ,
-    lib_setting->dmanum = DMA,
+    lib_setting->dmanum = WS2812_DMA,
     lib_setting->channel[0].gpionum = GPIO_PIN;
     lib_setting->channel[0].invert = 0,
     lib_setting->channel[0].count = w*h;
@@ -160,7 +171,7 @@ void render_deinit(RENDER hdl)
 #ifndef RENDER_USE_LVGL
     graph_deinit(render_hdl->graph);
 #endif
-    LOG_INFO("ws2811HW destruct completed\n");
+    LOG_DEBUG("ws2811HW destruct completed\n");
 }
 
 void render_writebuf(RENDER hdl)

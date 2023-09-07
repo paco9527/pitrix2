@@ -1,4 +1,7 @@
 #include "script_proc.h"
+#include <stdio.h>
+#include <pthread.h>
+#include "script_import.h"
 #include "lv_adapter.h"
 #include "log.h"
 #include "lvgl.h"
@@ -37,7 +40,7 @@ int simple_repl(lua_State* state)
     int len = 0;
     char buf[512];
     memset(buf, 0, sizeof(buf));
-    LOG_INFO("Enter Pitrix REPL");
+    LOG_INFO("Enter Pitrix REPL. Press Ctrl + C to exit application");
     while(fgets(buf, sizeof(buf), stdin) != NULL)
     {
         LOG_DEBUG("current top:%d", lua_gettop(state));

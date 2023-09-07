@@ -1,12 +1,12 @@
 #include <stdio.h>
-#include "graph.h"
-#include "render.h"
-#include "script_proc.h"
-#include "key_handle.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <signal.h>
 #include "lvgl.h"
 #include "lv_adapter.h"
-#include <signal.h>
 #include "log.h"
+#include "render.h"
+#include "script_proc.h"
 
 int run_flag = 0; // 在script_proc.c里作为外部变量使用，为0时结束脚本执行线程
 
@@ -21,8 +21,6 @@ int main(int argc, char** argv)
     act.sa_handler = exit_handler;
     sigemptyset(&act.sa_mask);
     sigaction(SIGINT, &act, NULL);
-    
-    system("ulimit -c unlimited");
 
     RENDER render = NULL;
 

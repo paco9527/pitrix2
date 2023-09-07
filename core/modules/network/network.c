@@ -1,6 +1,7 @@
 #include "network.h"
 #include "network_priv.h"
 #include <stdlib.h>
+#include <string.h>
 
 static int do_net_open(lua_State *L)
 {
@@ -30,7 +31,7 @@ static int do_net_connect_ip(lua_State *L)
     if(net_connect_ip(socket, input))
     {
         luaL_error(L, "connect failed, IP %s\r\n", input);
-        close(socket);
+        net_close(socket);
     }
     return 1;
 }

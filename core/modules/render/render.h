@@ -1,28 +1,9 @@
 #ifndef _RENDER
 #define _RENDER
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdint.h>
-#include <pthread.h>
+#include "pitrix_config.h"
 #include "ws2811.h"
-#include "graph.h"
-#include "log.h"
 #include "lvgl.h"
-
-#define ARRAY_SIZE(stuff)       (sizeof(stuff) / sizeof(stuff[0]))
-
-// defaults for cmdline options
-#define TARGET_FREQ             WS2811_TARGET_FREQ
-#define GPIO_PIN                18
-#define DMA                     10
-#define STRIP_TYPE              WS2811_STRIP_GRB		// the real WRGB, 4 byte
-
-#define WIDTH                   32
-#define HEIGHT                  8
-#define LED_COUNT               (WIDTH * HEIGHT)
 
 typedef struct _RENDER_HDL
 {
