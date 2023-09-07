@@ -1,4 +1,4 @@
-# 供各层makefile使用的包含目录列表
+# 生成供makefile使用的包含目录列表
 rm inc_list.config
 DIR=$(pwd)
 (find $DIR/core \(   -path "*demos" \
