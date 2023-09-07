@@ -1,31 +1,29 @@
 #include "log.h"
 
-static time_t t;
-static struct tm *btime;
-static struct tm storetime;
-static FILE *lf;
+LOG_LEVEL log_level = ERROR;
 
-const struct tm * getbtime(void)
+static struct tm storetime;
+static export_log g_write_func;
+static char logcontent[MAX_EXPORT_CONTENT_LEN];
+
+const struct tm * get_tm_time(void)
 {
+    struct tm *btime;
+    time_t t;
     time(&t);
     btime = localtime_r(&t,&storetime);
     return btime;
 }
 
-time_t getatime(void)
-{
-    time(&t);
-    return t;
-}
-
 void writelog(char* file, int line, int level, const char* logtext, ...)
 {
     char head[128] = {0};
-    char logcontent[1024];
     va_list arg;
+    struct tm *btime = NULL;
     va_start(arg,logtext);
-    getbtime();
+    btime = get_tm_time();
     int head_len = 0;
+    int total_len = 0;
     switch(level)
     {
         case 0:
@@ -49,33 +47,34 @@ void writelog(char* file, int line, int level, const char* logtext, ...)
                                     btime->tm_hour,     \
                                     btime->tm_min,      \
                                     btime->tm_sec);
+    
     strcpy(logcontent,head);
     vsnprintf(logcontent + head_len, sizeof(logcontent) - HEAD_TIMESTAMP_LEN, logtext, arg);
-    strcat(logcontent,"\n");
+    strcat(logcontent,"\r\n");
     va_end(arg);
-    //fputs(logcontent,lf);
-    printf(logcontent);
+    fprintf(stdout, logcontent);
+
+    if(g_write_func)
+    {
+        total_len = strlen(logcontent);
+        if(total_len > MAX_EXPORT_CONTENT_LEN)
+        {
+            total_len = MAX_EXPORT_CONTENT_LEN;
+        }
+        g_write_func(head, total_len);
+    }
+    va_end(arg);
 }
 
-static void init(void)
-{
-    lf = fopen("logfile", "a");
-}
-
-void log_init(void)
+void log_set_export_func(export_log write_func)
 {
     printf("log construct complete\n");
-    lf = NULL;
-    init();
+    g_write_func = write_func;
 }
 
-void log_deinit(void)
+void log_set_level(LOG_LEVEL level)
 {
-    if(lf != NULL)
-    {
-        fflush(lf);
-        fclose(lf);
-    }
+    log_level = level;
 }
 
 

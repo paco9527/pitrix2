@@ -129,7 +129,6 @@ RENDER render_init(uint16_t w, uint16_t h)
     RENDER_HDL* render_hdl = (RENDER_HDL*)get_render_instance();
     ws2811_t* lib_setting = &(render_hdl->ledstring);
 
-    //后续由外部配置?
     lib_setting->freq = TARGET_FREQ,
     lib_setting->dmanum = DMA,
     lib_setting->channel[0].gpionum = GPIO_PIN;
@@ -161,7 +160,6 @@ void render_deinit(RENDER hdl)
 #ifndef RENDER_USE_LVGL
     graph_deinit(render_hdl->graph);
 #endif
-//    free(render_hdl);
     LOG_INFO("ws2811HW destruct completed\n");
 }
 

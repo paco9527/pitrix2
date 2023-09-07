@@ -37,8 +37,10 @@ int simple_repl(lua_State* state)
     int len = 0;
     char buf[512];
     memset(buf, 0, sizeof(buf));
+    LOG_INFO("Enter Pitrix REPL");
     while(fgets(buf, sizeof(buf), stdin) != NULL)
     {
+        LOG_DEBUG("current top:%d", lua_gettop(state));
         error |= luaL_loadstring(state, buf);
         error |= lua_pcall(state, 0, 0, 0);
         if(error)
@@ -46,6 +48,7 @@ int simple_repl(lua_State* state)
             fprintf(stderr, "%s\n", lua_tostring(state, -1));
             lua_pop(state, -1);
         }
+        error = 0;
         memset(buf, 0, sizeof(buf));
     }
 }
@@ -55,16 +58,16 @@ void* script_runner_thread(void* arg)
     SCRIPT_NODE* pnode = NULL;
     RENDER hdl = get_render_instance();
     int tick = 0;
+    int list_dirty = 0;
     
     while(run_flag)
     {
-        if(pnode)
+        get_app_list();
+        if(pnode && home_scr_get_reset_status() == 0)// 如果其他线程修改过链表，进入else复位滚动指针pnode
         {
             if(tick % set_switch_time == 0)
             {
-                get_app_list(); // 如果其他线程正在操作链表，则阻塞
                 pnode = pnode->next;
-                release_app_list();
                 
                 if(NULL == pnode)
                 {
@@ -74,18 +77,22 @@ void* script_runner_thread(void* arg)
                 lv_exec(lv_obj_scroll_to_view(pnode->app_scr, LV_ANIM_ON));
                 //切换到当前显示页面的脚本
                 tick = 0;
-                LOG_INFO("node: %p\r\n", pnode);
+                LOG_DEBUG("node: %p", pnode);
             }
-            LOG_INFO("exec %d\r\n", pnode->node_id);
+            LOG_DEBUG("exec %d", pnode->node_id);
             lv_exec(script_exec(pnode));
         }
         else
         {
-            LOG_INFO("get head\r\n");
-            get_app_list();
+            LOG_DEBUG("reset pointer");
             pnode = get_script_list_head();
-            release_app_list();
+            if(pnode != NULL)
+            {
+                lv_exec(lv_obj_scroll_to_view(pnode->app_scr, LV_ANIM_OFF));
+            }
+            home_scr_reset_clear();
         }
+        release_app_list();
         tick++;
         usleep(set_exec_interval*1000);
     }

@@ -23,6 +23,7 @@ typedef struct _SCRIPT_LIST
 {
     int node_id;
     int enable;
+    char name[16];
     char* disp_script_buf;//外部提供内存
     int disp_script_size;
     lua_State* state;//两个脚本可共享状态内的变量
@@ -40,7 +41,7 @@ int script_exec(SCRIPT_NODE* node);
 
 int inq_script_cnt(void);
 
-int app_load_from_file(const char* dir);
+int app_load_from_file(char* dir, char* app_name);
 void app_del(SCRIPT_NODE** head, int node_id);
 int app_clear(SCRIPT_NODE* head);
 
@@ -52,6 +53,9 @@ void release_app_list(void);
 #ifdef RENDER_USE_LVGL
 int create_home_scr(int scr_cnt);
 void destroy_home_scr(void);
+void home_scr_reset_trigger(void);
+void home_scr_reset_clear(void);
+int home_scr_get_reset_status(void);
 #endif
 
 #endif

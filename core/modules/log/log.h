@@ -14,18 +14,21 @@
 
 #define HEAD_LEN HEAD_FLAG_LEN+HEAD_TIMESTAMP_LEN
 
+#define MAX_EXPORT_CONTENT_LEN 1024
+
 typedef enum
 {
     DEBUG,
-    INFO,
     ERROR,
+    INFO,
 }LOG_LEVEL;
 
-extern LOG_LEVEL log_level;
-extern const struct tm *getbtime(void);
-extern time_t getatime(void);
+LOG_LEVEL log_level;
+// static int(*export_log)(char* content, size_t len);
+typedef int(*export_log)(char*, size_t);
 
-void writelog(char* file, int line, int level, const char* logtext, ...);
+void log_set_export_func(export_log write_func);
+void log_set_level(LOG_LEVEL level);
 
 #define LOG_INFO(content, ...) \
         do{         \
