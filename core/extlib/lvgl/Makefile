@@ -9,17 +9,24 @@ OBJ = $(patsubst %.c,%.o,$(CSRCS))
 CFLAGS += "-I."
 CFLAGS += "-I./src"
 
-MYFLAGS = -g
+WORKING_DIR = $(shell pwd)
+isexist = $(shell if [ -d $(WORKING_DIR)/build ]; then echo "true"; else echo "false"; fi)
 
+ifeq ("$(isexist)", "false")
+all:checkdir $(OBJ)
+else
 all:$(OBJ)
+endif
 	$(CROSS_COMPILE)ar rcu liblvgl.a build/*.o
 
 %.o:%.c
 	$(CC) -g $(CFLAGS) -c $< -o build/$(notdir $@)
 
+checkdir:
+	$(ECHO)mkdir build
+
 .PHONY:clean
 
-OBJ = $(shell find . -name '*.o')
 clean:
-	@rm -f $(OBJ)
-	rm liblvgl.a
+	$(ECHO)rm -rf build
+	$(ECHO)rm liblvgl.a

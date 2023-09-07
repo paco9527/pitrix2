@@ -2,6 +2,7 @@
 #include "network_priv.h"
 #include <stdlib.h>
 #include <string.h>
+#include "log.h"
 
 static int do_net_open(lua_State *L)
 {

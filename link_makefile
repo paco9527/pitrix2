@@ -11,4 +11,4 @@ BASE_LIB += liblvgl.a
 .PHONY: all
 
 all:
-	$(ECHO)$(TOOL_CHAIN) $(OBJ) $(EXT_LIB) $(BASE_LIB) $(OS_LIB) -o ../$(TARGET) 
+	$(ECHO)$(CROSS_CC) $(OBJ) $(EXT_LIB) $(BASE_LIB) $(OS_LIB) -o ../$(TARGET) 

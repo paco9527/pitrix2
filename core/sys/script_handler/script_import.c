@@ -177,7 +177,7 @@ void script_node_ls(SCRIPT_NODE* head)
     fprintf(stdout, "current loaded apps:");
     do
     {
-        fprintf(stdout, "id: %d\tname: %s, node: %p", node->node_id, node->name, node);
+        fprintf(stdout, "id: %d\tname: %s, node: %p\r\n", node->node_id, node->name, node);
         node = node->next;
     }while(node != head);
 }

@@ -1,3 +1,6 @@
 [submodule "core/extlib/luavgl"]
 	path = core/extlib/luavgl
 	url = https://github.com/paco9527/luavgl.git
+[submodule "core/extlib/WiringPi"]
+	path = core/extlib/WiringPi
+	url = https://github.com/WiringPi/WiringPi.git

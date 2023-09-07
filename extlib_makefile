@@ -26,7 +26,6 @@ all:
 	mv lua-5.4.6/src/liblua.a ../../output
 
 	$(CC) -I lua-5.4.6/src -c lua_import.c -o ../../output/lua_import.o
-	cp rpi_ws281x-1.0.0/build/libws2811.a ../../output
 
 .PHONY: clean
 
