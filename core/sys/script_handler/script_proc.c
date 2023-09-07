@@ -2,14 +2,15 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <unistd.h>
-#include "script_import.h"
 #include "log.h"
 #include "lvgl.h"
+#include "pitrix_config.h"
+#include "script_import.h"
 
 static lua_State* repl_state = NULL;
 
-static int set_switch_time = 50;
-static int set_exec_interval = 100;
+static int set_switch_time = SCRIPT_SWITCH_TIMES;
+static int set_exec_interval = SCRIPT_EXEC_INTERVAL;
 
 extern int run_flag;
 

@@ -12,5 +12,7 @@
 
 // 用于sys/script_handler
 #define SETUP_SCRIPT_BUF_LEN    4096
+#define SCRIPT_EXEC_INTERVAL    100 // ms
+#define SCRIPT_SWITCH_TIMES     50 // SCRIPT_SWITCH_TIMES*SCRIPT_EXEC_INTERVAL毫秒后滚动到下一个脚本
 
 #endif
