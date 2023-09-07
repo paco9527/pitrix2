@@ -5,6 +5,7 @@
         "log.h": "c",
         "stdlib.h": "c",
         "lauxlib.h": "c",
-        "pthread.h": "c"
+        "pthread.h": "c",
+        "time.h": "c"
     }
 }

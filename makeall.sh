@@ -18,7 +18,7 @@ fi
 echo "Toolchain:"$CROSS_COMPILE
 
 # 需要单独编译的库
-if [ "$BUILDLIB"="buildlib" ]; then
+if [ "$BUILDLIB" = "buildlib" ]; then
     echo "Buildlib:"$BUILDLIB
 
     # WiringPi：只编译wiringPi库

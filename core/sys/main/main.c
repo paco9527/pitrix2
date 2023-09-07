@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <unistd.h>
-#include <stdlib.h>
 #include <signal.h>
 #include "lvgl.h"
-#include "lv_adapter.h"
 #include "log.h"
 #include "render.h"
 #include "script_proc.h"
+#include "pitrix_config.h"
 
 int run_flag = 0; // 在script_proc.c里作为外部变量使用，为0时结束脚本执行线程
 
@@ -24,7 +23,7 @@ int main(int argc, char** argv)
 
     RENDER render = NULL;
 
-    render = render_init(32, 8);
+    render = render_init(MATRIX_WIDTH, MATRIX_HEIGHT);
     run_flag = 1;
 
     loader_init();

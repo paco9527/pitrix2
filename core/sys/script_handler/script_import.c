@@ -9,9 +9,9 @@
 
 #include "log.h"
 #include "luavgl.h"
-#include "lv_adapter.h"
 #include "lua_import.h"
 #include "network.h"
+#include "pitrix_config.h"
 // #include "simple_bmp.h"
 #ifndef RENDER_USE_LVGL
 #include "graph.h"
@@ -174,7 +174,7 @@ void script_node_ls(SCRIPT_NODE* head)
         return;
     
     SCRIPT_NODE* node = head;
-    fprintf(stdout, "current loaded apps:");
+    fprintf(stdout, "current loaded apps:\r\n");
     do
     {
         fprintf(stdout, "id: %d\tname: %s, node: %p\r\n", node->node_id, node->name, node);
@@ -435,12 +435,23 @@ static int do_set_log_lvl(lua_State* state)
     return 1;
 }
 
+static int do_set_brightness(lua_State* state)
+{
+    int brightness = 0;
+    if(lua_isinteger(state, 1))
+    {
+        brightness = lua_tointeger(state, 1);
+    }
+    render_hardware_setting(HW_BRIGHTNESS, &brightness, sizeof(int));
+}
+
 static const struct luaL_Reg sys_lib[] =
 {
     {"load", do_load_app},
     {"ls", do_ls_app},
     {"del", do_del_app},
     {"log_lvl", do_set_log_lvl},
+    {"set_brightness", do_set_brightness},
     {NULL, NULL}
 };
 

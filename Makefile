@@ -60,3 +60,9 @@ $(TARGET): make_mod make_sys make_extlib
 
 clean:
 	find . -name '*.o' -exec rm {} \;
+	find core/modules -name 'Makefile' -exec rm {} \;
+	find core/sys -name 'Makefile' -exec rm {} \;
+	rm -f core/extlib/Makefile
+	rm -f output/*
+	rm -f inc_list.config
+	rm -f pitrix

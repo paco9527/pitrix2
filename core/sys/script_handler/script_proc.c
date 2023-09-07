@@ -1,8 +1,8 @@
 #include "script_proc.h"
 #include <stdio.h>
 #include <pthread.h>
+#include <unistd.h>
 #include "script_import.h"
-#include "lv_adapter.h"
 #include "log.h"
 #include "lvgl.h"
 
