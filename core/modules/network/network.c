@@ -9,7 +9,8 @@ static int do_net_open(lua_State *L)
     int socket = net_open();
     if(socket < 0)
     {
-        luaL_error(L, "open socket error\r\n");
+        LOG_ERROR("open socket error");
+        return 0;
     }
     else
     {
@@ -22,27 +23,82 @@ static int do_net_close(lua_State *L)
 {
     int socket = (int)lua_tointeger(L, 1);
     net_close(socket);
-    return 1;
+    return 0;
 }
 
 static int do_net_connect_ip(lua_State *L)
 {
-    int socket = (int)lua_tointeger(L, 1);
-    char* input = (char*)lua_tostring(L, 2);
-    if(net_connect_ip(socket, input))
+    int socket = -1;
+    char* input = NULL;
+    int ret = 0;
+    uint16_t port = 0;
+
+    if(lua_isinteger(L, 1))
     {
-        luaL_error(L, "connect failed, IP %s\r\n", input);
+        socket = (int)lua_tointeger(L, 1);
+    }
+    else
+    {
+        LOG_ERROR("Invalid socket");
+        return 0;
+    }
+
+    if(lua_isstring(L, 2))
+    {
+        input = (char*)lua_tostring(L, 2);
+    }
+    else
+    {
+        LOG_ERROR("Invalid address");
+        return 0;
+    }
+
+    if(lua_isinteger(L, 3))
+    {
+        port = (uint16_t)lua_tointeger(L, 3);
+    }
+    else
+    {
+        port = 80;
+    }
+
+    ret = net_connect_ip(socket, input, port);
+    if(ret)
+    {
+        LOG_ERROR("connect failed, ret %d, IP %s", ret, input);
         net_close(socket);
     }
-    return 1;
+    return 0;
 }
 
 static int do_net_read(lua_State *L)
 {
-    int socket = (int)lua_tointeger(L, 1);
-    int len = (int)lua_tointeger(L, 2);
-    char* tmp = malloc(sizeof(char)*len);
+    int socket = -1;
+    int len = 0;
     int ret = 0;
+    char* tmp = NULL;
+
+    if(lua_isinteger(L, 1))
+    {
+        socket = (int)lua_tointeger(L, 1);
+    }
+    else
+    {
+        LOG_ERROR("Invalid socket");
+        return 0;
+    }
+    
+    if(lua_isinteger(L, 2))
+    {
+        len = (int)lua_tointeger(L, 2);
+    }
+    else
+    {
+        LOG_ERROR("Invalid read length");
+        return 0;
+    }
+    
+    tmp = malloc(sizeof(char)*len);
     memset(tmp, 0, sizeof(char)*len);
 
     ret = net_read(socket, tmp, len);
@@ -52,7 +108,7 @@ static int do_net_read(lua_State *L)
     }
     else
     {
-        luaL_error(L, "read failed, socket %d\r\n", socket);
+        LOG_ERROR("read failed, socket %d", socket);
         lua_pushinteger(L, ret);
     }
     free(tmp);
@@ -65,6 +121,27 @@ static int do_net_timed_read(lua_State *L)
     int socket = (int)lua_tointeger(L, 1);
     int len = (int)lua_tointeger(L, 2);
     int ret = 0;
+
+    if(lua_isinteger(L, 1))
+    {
+        socket = (int)lua_tointeger(L, 1);
+    }
+    else
+    {
+        LOG_ERROR("Invalid socket");
+        return 0;
+    }
+    
+    if(lua_isinteger(L, 2))
+    {
+        len = (int)lua_tointeger(L, 2);
+    }
+    else
+    {
+        LOG_ERROR("Invalid read length");
+        return 0;
+    }
+    
     if(lua_isinteger(L, 3))
     {
         timeout = (int)lua_tointeger(L, 3);
@@ -73,6 +150,7 @@ static int do_net_timed_read(lua_State *L)
     {
         timeout = 500;
     }
+
     char* tmp = malloc(sizeof(char)*len);
     memset(tmp, 0, sizeof(char)*len);
 
@@ -83,7 +161,7 @@ static int do_net_timed_read(lua_State *L)
     }
     else
     {
-        luaL_error(L, "read failed, socket %d\r\n", socket);
+        LOG_ERROR("read failed, socket %d", socket);
         lua_pushinteger(L, ret);
     }
     free(tmp);
@@ -92,10 +170,31 @@ static int do_net_timed_read(lua_State *L)
 
 static int do_net_write(lua_State *L)
 {
-    int socket = (int)lua_tointeger(L, 1);
-    char* input = (char*)lua_tostring(L, 2);
+    int socket = -1;
+    char* input = NULL;
     int len = 0;
     int ret = 0;
+
+    if(lua_isinteger(L, 1))
+    {
+        socket = (int)lua_tointeger(L, 1);
+    }
+    else
+    {
+        LOG_ERROR("Invalid socket");
+        return 0;
+    }
+
+    if(lua_isstring(L, 2))
+    {
+        input = (char*)lua_tostring(L, 2);
+    }
+    else
+    {
+        LOG_ERROR("Invalid write content address");
+        return 0;
+    }
+
     if(lua_isinteger(L, 3))
     {
         len = (int)lua_tointeger(L, 3);
@@ -108,7 +207,7 @@ static int do_net_write(lua_State *L)
     ret = net_write(socket, input, len);
     if(ret < 0)
     {
-        luaL_error(L, "write failed, socket %d\r\n", socket);
+        LOG_ERROR("write failed, socket %d", socket);
     }
     lua_pushinteger(L, ret);
     return 1;
@@ -118,9 +217,30 @@ static int do_net_timed_write(lua_State *L)
 {
     int len = 0;
     int timeout = 0;
-    int socket = (int)lua_tointeger(L, 1);
-    char* input = (char*)lua_tostring(L, 2);
+    int socket = -1;
+    char* input = NULL;
     int ret = 0;
+
+    if(lua_isinteger(L, 1))
+    {
+        socket = (int)lua_tointeger(L, 1);
+    }
+    else
+    {
+        LOG_ERROR("Invalid socket");
+        return 0;
+    }
+
+    if(lua_isstring(L, 2))
+    {
+        input = (char*)lua_tostring(L, 2);
+    }
+    else
+    {
+        LOG_ERROR("Invalid write content address");
+        return 0;
+    }
+
     if(lua_isinteger(L, 3))
     {
         len = (int)lua_tointeger(L, 3);
@@ -142,7 +262,7 @@ static int do_net_timed_write(lua_State *L)
     ret = net_timed_write(socket, input, len, timeout);
     if(ret < 0)
     {
-        luaL_error(L, "write failed, socket %d\r\n", socket);
+        LOG_ERROR("write failed, socket %d", socket);
     }
     lua_pushinteger(L, ret);
     return 1;

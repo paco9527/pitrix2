@@ -14,13 +14,13 @@ int net_open(void)
     return fd;
 }
 
-int net_connect_ip(int fd, char* addr)
+int net_connect_ip(int fd, char* addr, uint16_t port)
 {
     ASSERT_RET(addr == NULL, -1);
     struct sockaddr_in serveraddr;
     serveraddr.sin_family = AF_INET;
     inet_pton(AF_INET, addr, &serveraddr.sin_addr.s_addr);
-    serveraddr.sin_port = htons(80);
+    serveraddr.sin_port = htons(port);
     return connect(fd, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
 }
 
