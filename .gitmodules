@@ -7,3 +7,6 @@
 [submodule "core/extlib/lua"]
 	path = core/extlib/lua
 	url = https://github.com/lua/lua.git
+[submodule "core/extlib/lua-cjson"]
+	path = core/extlib/lua-cjson
+	url = https://github.com/mpx/lua-cjson/
