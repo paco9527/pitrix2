@@ -31,7 +31,7 @@ LUA_BIN_DIR =       $(PREFIX)
 
 ## Linux
 
-CROSS_TOOLCHAIN = arm-linux-gnueabihf
+CROSS_TOOLCHAIN = aarch64-linux-gnu
 CC = $(ECHO)$(CROSS_TOOLCHAIN)-gcc
 AR = $(ECHO)$(CROSS_TOOLCHAIN)-ar
 

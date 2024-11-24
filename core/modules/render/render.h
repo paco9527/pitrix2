@@ -24,7 +24,7 @@ typedef enum
     HW_BRIGHTNESS,
 }RENDER_PARAM;
 
-pthread_mutex_t lv_mutex;
+extern pthread_mutex_t lv_mutex;
 
 #define lv_exec(exec) \
 do \

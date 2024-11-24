@@ -8,7 +8,7 @@ typedef enum
     INFO,
 }LOG_LEVEL;
 
-LOG_LEVEL log_level;
+extern LOG_LEVEL log_level;
 // static int(*export_log)(char* content, size_t len);
 typedef int(*export_log)(char*, size_t);
 

@@ -13,7 +13,7 @@ CROSS_COMPILE=$1
 BUILDLIB=$2
 
 if [ ! -n "$CROSS_COMPILE" ]; then
-    CROSS_COMPILE="arm-linux-gnueabihf-"
+    CROSS_COMPILE="aarch64-linux-gnu-"
 fi
 echo "Toolchain:"$CROSS_COMPILE
 
