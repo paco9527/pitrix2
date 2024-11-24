@@ -1,6 +1,6 @@
 [submodule "core/extlib/luavgl"]
 	path = core/extlib/luavgl
-	url = https://github.com/paco9527/luavgl.git
+	url = https://github.com/XuNeo/luavgl
 [submodule "core/extlib/WiringPi"]
 	path = core/extlib/WiringPi
 	url = https://github.com/WiringPi/WiringPi.git
@@ -10,3 +10,9 @@
 [submodule "core/extlib/lua-cjson"]
 	path = core/extlib/lua-cjson
 	url = https://github.com/mpx/lua-cjson/
+[submodule "core/extlib/lvgl"]
+	path = core/extlib/lvgl
+	url = https://github.com/lvgl/lvgl
+[submodule "core/extlib/rpi-ws281x"]
+	path = core/extlib/rpi-ws281x
+	url = https://github.com/jgarff/rpi_ws281x
