@@ -1,0 +1,3 @@
+file(GLOB SOURCES "${SRC_PATH}/**/*.c")
+add_library(${LIBRARY_NAME} STATIC ${SOURCES})
+include_directories(${EXTERN_INCLUDE_PATH})
