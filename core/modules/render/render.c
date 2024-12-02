@@ -4,10 +4,12 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <pthread.h>
-#include "graph.h"
 #include "log.h"
 #include "lv_adapter.h"
 #include "render.h"
+#ifndef RENDER_USE_LVGL
+#include "graph.h"
+#endif
 
 pthread_mutex_t lv_mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -27,7 +29,9 @@ lv_obj_t* render_get_act_scr(void)
 
 RENDER render_init(uint16_t w, uint16_t h)
 {
+#ifndef RENDER_USE_LVGL
     GRAPH graph;
+#endif
     RENDER_HDL* render_hdl = (RENDER_HDL*)get_render_instance();
     
     disp_hardware_init(render_hdl, w, h);

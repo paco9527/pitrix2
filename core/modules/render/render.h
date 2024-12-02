@@ -3,6 +3,7 @@
 
 #include <pthread.h>
 #include "ws2811.h"
+#include "pitrix_config.h"
 #ifdef RENDER_USE_LVGL
 #include "lvgl.h"
 #endif

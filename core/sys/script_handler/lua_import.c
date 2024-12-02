@@ -1,9 +1,7 @@
 #include "lua_import.h"
 #include "lualib.h"
-#ifndef _IMPORT_CJSON
-#include "lua-cjson/lua_cjson.c"
-#include "lua-cjson/fpconv.c"
-#endif
+
+extern int luaopen_cjson(lua_State *l);
 
 int lua_import_lib(lua_State* L)
 {
