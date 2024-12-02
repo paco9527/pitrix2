@@ -1,1 +1,30 @@
-add_subdirectory(core)
+project(pitrix)
+cmake_minimum_required(VERSION 3.22)
+set(CMAKE_C_COMPILER aarch64-linux-gnu-gcc)
+set(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++)
+
+set(EXTLIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/core/extlib/output")
+set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/core")
+set(INCLUDE_DIR "${INCLUDE_DIR}\;${EXTLIB_DIR}/include")
+set(INCLUDE_DIR "${INCLUDE_DIR}\;${EXTLIB_DIR}/include/lvgl")
+set(INCLUDE_DIR "${INCLUDE_DIR}\;${EXTLIB_DIR}/include/ws2811")
+set(INCLUDE_DIR "${INCLUDE_DIR}\;${EXTLIB_DIR}/local/include")
+# set(INCLUDE_DIR "${INCLUDE_DIR}" CACHE STRING "${INCLUDE_DIR}")
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/core/modules)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/core/sys)
+
+include_directories(${INCLUDE_DIR})
+
+add_executable(pitrix ${CMAKE_CURRENT_SOURCE_DIR}/core/sys/main/main.c)
+
+target_link_directories(pitrix PUBLIC ${EXTLIB_DIR}/lib)
+target_link_directories(pitrix PUBLIC ${EXTLIB_DIR}/local/lib)
+target_link_libraries(pitrix sys)
+target_link_libraries(pitrix modules)
+target_link_libraries(pitrix luavgl)
+target_link_libraries(pitrix ws2811)
+target_link_libraries(pitrix wiringPi)
+target_link_libraries(pitrix lvgl)
+target_link_libraries(pitrix lua)
+target_link_libraries(pitrix m)

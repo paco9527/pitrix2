@@ -1,6 +1,8 @@
 #ifndef _PIRTIX_CONFIG
 #define _PIRTIX_CONFIG
 
+#define RENDER_USE_LVGL         1
+
 // 用于modules/render
 #define GPIO_PIN                18
 #define WS2812_DMA              10
