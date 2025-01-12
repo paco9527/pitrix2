@@ -1,0 +1,12 @@
+diff --git a/src/private.h b/src/private.h
+index 20aa802..7cf8d0f 100644
+--- a/src/private.h
++++ b/src/private.h
+@@ -7,6 +7,7 @@
+ #include <stdbool.h>
+ #include <stdint.h>
+ #include <stdlib.h>
++#include <luavgl.h>
+ 
+ /* clang-format off */
+ #define debug(format, ...)
